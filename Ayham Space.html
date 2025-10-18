@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Fun Galaxy 🚀</title>
+  <style>
+    :root{
+      --bg:#0b1026; --star:#ffffff; --accent:#7c9cff; --accent2:#ffd166; --accent3:#ff6b6b; --text:#eaf0ff; --muted:#a8b3ff; --card:#11173a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family: "Comic Sans MS", "Comic Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--text); background: var(--bg); overflow-x:hidden;}
+    .stars, .stars2{position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(2px 2px at 20% 30%, var(--star) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 70% 60%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 40% 80%, var(--star) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 85% 20%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 10% 70%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 55% 10%, var(--star) 50%, transparent 51%); animation: drift 40s linear infinite; opacity:.6}
+    .stars2{animation-duration: 70s; opacity:.35; filter:blur(0.5px)}
+    @keyframes drift{ from{background-position:0 0} to{background-position:2000px -2000px} }
+    header{position:sticky; top:0; backdrop-filter: blur(6px); background: linear-gradient(to right, rgba(12,18,40,.85), rgba(12,18,40,.55)); border-bottom: 1px solid rgba(255,255,255,.08); z-index:10}
+    .wrap{max-width:1000px; margin:0 auto; padding:16px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:900; letter-spacing:.5px; font-size: clamp(20px, 2vw + 12px, 28px);} .brand .emoji{font-size:1.2em}
+    nav{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    nav a{text-decoration:none; color:var(--text); background:rgba(255,255,255,.06); padding:8px 12px; border-radius:999px; font-weight:700; font-size:14px; border:1px solid rgba(255,255,255,.1); transition: transform .15s ease, background .2s ease;} nav a:hover{transform: translateY(-2px); background:rgba(255,255,255,.12)}
+    .hero{text-align:center; padding:48px 16px 24px; position:relative;} .hero h1{font-size: clamp(32px, 3vw + 24px, 56px); margin:0 0 8px;} .hero p{color:var(--muted); margin:0}
+    .controls{ display:flex; justify-content:center; gap:12px; margin:18px 0 0 } .btn{ border:none; padding:10px 16px; border-radius:999px; font-weight:800; cursor:pointer; background: linear-gradient(135deg, var(--accent), #b6c4ff); color:#0b1026; box-shadow: 0 6px 20px rgba(124,156,255,.35); transition: transform .12s ease, box-shadow .12s ease;} .btn:hover{ transform: translateY(-2px); box-shadow:0 10px 24px rgba(124,156,255,.5)} .btn.alt{ background: linear-gradient(135deg, var(--accent2), #ffe8a6) }
+    section{ padding: 28px 16px 40px } section h2{ font-size: clamp(22px, 2vw + 10px, 34px); margin:4px 0 16px } .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px }
+    .card{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px; min-height:160px; position:relative; overflow:hidden; cursor:pointer; transition: transform .18s ease, background .2s ease; } .card:hover{ transform: translateY(-4px); background: rgba(255,255,255,.10)}
+    .tag{ display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:900; background: rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.18); margin-bottom:6px }
+    .planet{ font-size:52px; line-height:1; } .card h3{ margin:10px 0 6px } .card p{ margin:0; color:var(--muted) }
+    .flipwrap{ perspective:900px } .flip{ position:relative; transform-style:preserve-3d; transition: transform .6s cubic-bezier(.2,.7,.1,1); min-height:140px; } .card.flipped .flip{ transform: rotateY(180deg) } .face{ position:absolute; inset:0; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center } .back{ transform: rotateY(180deg); background:rgba(0,0,0,.15); border-radius:12px; padding:8px }
+    .launchpad{ display:grid; grid-template-columns: 1fr; place-items:center; gap:16px; margin-top:8px } .sky{ width:100%; max-width:520px; height:280px; border-radius:20px; border:1px solid rgba(255,255,255,.1); background: linear-gradient(#0b1026 60%, #121b44); position:relative; overflow:hidden } .ground{ position:absolute; bottom:0; left:0; right:0; height:46px; background: linear-gradient(#24326a, #11173a) }
+    .rocket{ position:absolute; left:calc(50% - 22px); bottom:46px; width:44px; height:90px; } .rocket .body{ width:44px; height:70px; background:#e8ecff; border-radius:22px 22px 8px 8px; border:2px solid rgba(0,0,0,.15)} .rocket .window{ width:16px; height:16px; background:var(--accent); border-radius:50%; border:2px solid #0b1026; position:absolute; top:24px; left:14px } .fin{ position:absolute; width:16px; height:16px; background:var(--accent3); bottom:20px } .fin.left{ left:-8px; transform:skewY(18deg) } .fin.right{ right:-8px; transform:skewY(-18deg) } .flame{ position:absolute; left:10px; bottom:0; width:24px; height:24px; background: radial-gradient(var(--accent2), #ff8c42, transparent 70%); border-radius:50%; opacity:0; filter:blur(1px)} .stars-anim{ position:absolute; inset:0; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.7) 0 2px, transparent 2px 60px ); opacity:.15; transform: translateY(-100%)} .launching .rocket{ animation: lift 3s cubic-bezier(.18,.62,.26,.99) forwards } .launching .flame{ animation: flame 1s ease-in-out infinite; opacity:1 } .launching .stars-anim{ animation: warp 2.6s linear forwards } @keyframes lift{ 0%{ transform: translateY(0) } 100%{ transform: translateY(-360px) } } @keyframes flame{ 0%,100%{ transform: scale(.9) } 50%{ transform: scale(1.2) } } @keyframes warp{ to{ transform: translateY(0) } }
+
+    /* POPUP / modal styles */
+    .overlay{ position:fixed; inset:0; background:rgba(2,6,23,0.6); display:flex; align-items:center; justify-content:center; z-index:60; opacity:0; pointer-events:none; transition: opacity .18s ease }
+    .overlay.show{ opacity:1; pointer-events:auto }
+    .popup{ width: min(560px, 92%); background: linear-gradient(180deg, rgba(11,16,38,.98), rgba(17,23,58,.9)); border-radius:16px; border:1px solid rgba(255,255,255,.08); padding:18px; position:relative; box-shadow: 0 12px 40px rgba(3,8,25,.6); overflow:hidden }
+    .popup .close{ position:absolute; right:12px; top:10px; background:transparent; border:2px solid rgba(255,255,255,.08); color:var(--text); padding:6px 8px; border-radius:8px; cursor:pointer }
+    .popup .bigimg{ width:160px; height:160px; display:block; margin:8px auto 12px; border-radius:12px; object-fit:cover; border:2px solid rgba(255,255,255,.06) }
+    .popup h3{ text-align:center; margin:0 0 8px }
+    .popup p{ color:var(--muted); text-align:center; margin:0 0 12px }
+
+    /* sunburst animation */
+    .sunburst{ position:absolute; left:50%; top:50%; width:20px; height:20px; transform:translate(-50%,-50%) scale(0); border-radius:999px; background: radial-gradient(circle at 50% 35%, rgba(255,208,88,.95), rgba(255,112,66,.75) 40%, transparent 60%); filter:blur(8px); opacity:.95 }
+    .sunburst.animate{ animation: burst 700ms cubic-bezier(.2,.8,.2,1) forwards }
+    @keyframes burst{ 0%{ transform:translate(-50%,-50%) scale(0); opacity:0 } 40%{ transform:translate(-50%,-50%) scale(1.6); opacity:.9 } 100%{ transform:translate(-50%,-50%) scale(1); opacity:0 } }
+
+    /* confetti */
+    .confetti{ position:absolute; inset:0; pointer-events:none; overflow:hidden }
+    .confetti i{ position:absolute; width:10px; height:14px; background:var(--accent2); transform-origin:center; opacity:0; animation: drop 1100ms linear forwards }
+    @keyframes drop{ to{ transform: translateY(340px) rotate(360deg); opacity:1 } }
+
+    footer{ text-align:center; color:var(--muted); padding:24px; font-size:14px }
+    .big{ font-size:16px; padding:12px 18px }
+    a:focus, button:focus{ outline:3px solid var(--accent2); outline-offset:2px }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="stars2"></div>
+
+  <header>
+    <div class="wrap">
+      <div class="brand"><span class="emoji">🚀</span> <span>My Fun Galaxy</span></div>
+      <nav aria-label="Main Navigation">
+        <a href="#home">Home</a>
+        <a href="#planets">Planets</a>
+        <a href="#rocket">My Rocket</a>
+        <a href="#facts">Fun Facts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="home" class="hero" aria-labelledby="title-home">
+      <h1 id="title-home">Welcome to My Fun Galaxy! 🌌</h1>
+      <p>Hi! I love space. Tap a planet to learn more — watch it pop out of the Sun! 🧑‍🚀</p>
+      <div class="controls">
+        <button class="btn big" id="sayHello" aria-label="Play introduction">Tap me to say Hi ✨</button>
+        <button class="btn alt big" id="toggleStars" aria-label="Make stars move faster">Faster Stars ⭐</button>
+      </div>
+    </section>
+
+    <section id="planets" aria-labelledby="title-planets">
+      <h2 id="title-planets">Planets 🪐 (Tap a card for a pop-out!)</h2>
+      <div class="grid">
+        <!-- example planet card structure updated with data-name and data-img -->
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Mercury" data-img="mercury.png" aria-label="Mercury card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Mercury</span>
+              <div class="planet">🔘</div>
+              <h3>The speedy one!</h3>
+              <p>Closest to the Sun.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>Mercury orbits the Sun in just 88 days!</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Venus" data-img="venus.png" aria-label="Venus card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Venus</span>
+              <div class="planet">💛</div>
+              <h3>So bright!</h3>
+              <p>Hottest planet.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>Venus spins the opposite way to most planets.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Earth" data-img="earth.png" aria-label="Earth card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Earth</span>
+              <div class="planet">🌍</div>
+              <h3>Our home!</h3>
+              <p>Blue and green.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>70% of Earth is covered by water.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Mars" data-img="mars.png" aria-label="Mars card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Mars</span>
+              <div class="planet">🔴</div>
+              <h3>The red planet!</h3>
+              <p>Dusty and cold.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>Mars has the tallest volcano in the solar system.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Jupiter" data-img="jupiter.png" aria-label="Jupiter card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Jupiter</span>
+              <div class="planet">🟤</div>
+              <h3>Giant planet!</h3>
+              <p>Big red spot.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>It’s so big, more than 1,000 Earths fit inside!</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Saturn" data-img="saturn.png" aria-label="Saturn card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Saturn</span>
+              <div class="planet">🪐</div>
+              <h3>Pretty rings!</h3>
+              <p>Light and floaty.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>Saturn could float in a giant bathtub (it’s very light)!</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Uranus" data-img="uranus.png" aria-label="Uranus card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Uranus</span>
+              <div class="planet">🧊</div>
+              <h3>Sideways spin!</h3>
+              <p>Cold and windy.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>Uranus rotates on its side like a rolling ball.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card flipwrap planet-card" role="button" tabindex="0" data-name="Neptune" data-img="neptune.png" aria-label="Neptune card">
+          <div class="flip">
+            <div class="face front">
+              <span class="tag">Neptune</span>
+              <div class="planet">🔵</div>
+              <h3>Windy world!</h3>
+              <p>Deep blue.</p>
+            </div>
+            <div class="face back">
+              <h3>Fun Fact 🎉</h3>
+              <p>Neptune has the fastest winds in the solar system!</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="rocket" aria-labelledby="title-rocket">
+      <h2 id="title-rocket">My Rocket 🚀 (Press Launch!)</h2>
+      <div class="launchpad">
+        <div class="sky" id="sky">
+          <div class="stars-anim"></div>
+          <div class="rocket" aria-label="Cartoon rocket">
+            <div class="body"></div>
+            <div class="window"></div>
+            <div class="fin left"></div>
+            <div class="fin right"></div>
+            <div class="flame"></div>
+          </div>
+          <div class="ground"></div>
+        </div>
+        <button class="btn big" id="launchBtn" aria-label="Launch the rocket">Launch! 🔥</button>
+      </div>
+    </section>
+
+    <section id="facts" aria-labelledby="title-facts">
+      <h2 id="title-facts">Fun Facts ✨</h2>
+      <div class="grid">
+        <div class="card"><h3>☀️ The Sun</h3><p>The Sun is a star!</p></div>
+        <div class="card"><h3>⭐ Stars</h3><p>We see them twinkle at night.</p></div>
+        <div class="card"><h3>🌕 Moon</h3><p>The Moon goes through phases.</p></div>
+        <div class="card"><h3>🛰️ Satellites</h3><p>They help us with TV and maps.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Made by <strong>Ayham Bin Danish</strong> 👩‍🚀 | Tip: tap planet cards to read facts or see a pop-out from the Sun.
+  </footer>
+
+  <!-- POPUP overlay (hidden by default) -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+      <button class="close" id="popupClose" aria-label="Close">✕</button>
+      <div class="sunburst" id="sunburst"></div>
+      <img class="bigimg" id="popupImg" src="" alt="Planet image">
+      <h3 id="popup-title">Planet</h3>
+      <p id="popup-text">Fun fact will appear here.</p>
+      <div class="confetti" id="confetti"></div>
+    </div>
+  </div>
+
+  <script>
+    // Flip cards on click or keypress (keeps previous flip behavior)
+    document.querySelectorAll('.card.flipwrap').forEach(card=>{
+      const toggle=()=>card.classList.toggle('flipped');
+      card.addEventListener('click', toggle);
+      card.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }});
+    });
+
+    // Launch animation
+    const sky = document.getElementById('sky');
+    const launchBtn = document.getElementById('launchBtn');
+    let launching = false;
+    launchBtn.addEventListener('click', ()=>{ if(launching) return; launching = true; sky.classList.add('launching'); setTimeout(()=>{ sky.classList.remove('launching'); launching=false; }, 3200); });
+
+    // Hello speech (simple alert)
+    document.getElementById('sayHello').addEventListener('click', ()=>{ alert('Hi! This is my webpage. I love rockets. Let\'s explore space!'); });
+
+    // Faster stars button toggles animation speed
+    const toggleStarsBtn = document.getElementById('toggleStars');
+    let fast = false;
+    toggleStarsBtn.addEventListener('click', ()=>{ fast = !fast; document.querySelectorAll('.stars, .stars2').forEach(el=>{ el.style.animationDuration = fast ? (el.classList.contains('stars2') ? '40s' : '20s') : (el.classList.contains('stars2') ? '70s' : '40s'); }); toggleStarsBtn.textContent = fast ? 'Slower Stars ⭐' : 'Faster Stars ⭐'; });
+
+    // POPUP / modal logic: show a big image, fun fact, and make a sunburst + confetti animation
+    const overlay = document.getElementById('overlay');
+    const popupImg = document.getElementById('popupImg');
+    const popupTitle = document.getElementById('popup-title');
+    const popupText = document.getElementById('popup-text');
+    const sunburst = document.getElementById('sunburst');
+    const confetti = document.getElementById('confetti');
+    const popupClose = document.getElementById('popupClose');
+
+    // helper to clear confetti
+    function clearConfetti(){ confetti.innerHTML=''; }
+
+    function makeConfetti(){ clearConfetti(); const colors=['#ffd166','#7c9cff','#ff6b6b','#9be7ff','#c1ffb8']; for(let i=0;i<18;i++){ const el=document.createElement('i'); el.style.left=(10+Math.random()*80)+'%'; el.style.top=(5+Math.random()*10)+'%'; el.style.background=colors[i%colors.length]; el.style.transform='rotate('+Math.floor(Math.random()*360)+'deg)'; el.style.animationDelay=(i*30)+'ms'; confetti.appendChild(el); } }
+
+    // Data for planets (title and funfact used for popup)
+    const planetData = {
+      Mercury: { fact: 'Mercury orbits the Sun in just 88 days!', img: 'mercury.png' },
+      Venus: { fact: 'Venus spins the opposite way to most planets.', img: 'venus.png' },
+      Earth: { fact: '70% of Earth is covered by water.', img: 'earth.png' },
+      Mars: { fact: 'Mars has the tallest volcano in the solar system.', img: 'mars.png' },
+      Jupiter: { fact: 'More than 1,000 Earths fit inside Jupiter!', img: 'jupiter.png' },
+      Saturn: { fact: 'Saturn could float in a giant bathtub (it\'s very light)!', img: 'saturn.png' },
+      Uranus: { fact: 'Uranus rotates on its side like a rolling ball.', img: 'uranus.png' },
+      Neptune: { fact: 'Neptune has the fastest winds in the solar system!', img: 'neptune.png' }
+    };
+
+    // Show popup with animation when clicking planet card
+    document.querySelectorAll('.planet-card').forEach(card=>{
+      card.addEventListener('click', (e)=>{
+        // prevent double-trigger from flip click
+        e.stopPropagation();
+        const name = card.dataset.name || 'Planet';
+        const data = planetData[name] || { fact:'Cool planet!', img: card.dataset.img || '' };
+
+        popupTitle.textContent = name;
+        popupText.textContent = data.fact;
+        popupImg.src = data.img || '';
+        popupImg.alt = name;
+
+        // show overlay
+        overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false');
+
+        // sunburst animation (pop out from center of popup)
+        sunburst.classList.remove('animate'); void sunburst.offsetWidth; sunburst.classList.add('animate');
+
+        // confetti
+        makeConfetti();
+
+        // auto-focus close button for accessibility
+        popupClose.focus();
+      });
+
+      // also support keyboard open
+      card.addEventListener('keypress', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); card.click(); } });
+    });
+
+    // close popup
+    function closePopup(){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); clearConfetti(); }
+    popupClose.addEventListener('click', closePopup);
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closePopup(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closePopup(); } });
+
+    // accessibility: stop flip when popup opens (so only popup shows)
+    document.querySelectorAll('.planet-card').forEach(c=>{ c.addEventListener('click', ()=>{ /* card flip still works visually but popup takes focus */ }); });
+
+  </script>
+</body>
+</html>
